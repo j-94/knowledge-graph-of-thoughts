@@ -1,0 +1,111 @@
+# KGoT Processing
+
+The Knowledge Graph of Thoughts (KGoT) processing is at the core of transforming your bookmarks into a connected knowledge graph. This page explains how the KGoT processor works and what outputs it produces.
+
+## How KGoT Processing Works
+
+The KGoT processor performs several steps to transform bookmarks into a knowledge graph:
+
+1. **Input Processing**: Reads bookmark data from the input file
+2. **Metadata Extraction**: Enhances bookmarks with additional metadata
+3. **Entity Extraction**: Identifies key entities (people, organizations, topics, technologies)
+4. **Relationship Mapping**: Creates connections between related bookmarks
+5. **Graph Generation**: Transforms the processed data into a graph representation
+6. **Output Generation**: Creates multiple output files in different formats
+
+## Running KGoT Processing
+
+```bash
+./process-bookmarks.sh kgot
+```
+
+When you run this command, the processor:
+- Builds the Docker image if needed
+- Mounts your input data directory
+- Processes the bookmarks using the KGoT processor
+- Generates output files in the output directory
+
+## Output Files
+
+KGoT processing generates several output files:
+
+### 1. kgot-bookmarks.json
+
+This file contains all processed bookmarks with enhanced metadata in JSON format. It serves as the foundation for the knowledge graph and includes:
+
+- Original bookmark data
+- Enhanced metadata (categories, tags, summaries)
+- Extracted entities
+- Creation and modification timestamps
+- Source information
+
+### 2. kgot_nodes.jsonl
+
+This file contains the nodes of the knowledge graph in JSONL format. Each line represents a node, which can be:
+
+- A bookmark
+- An entity (person, organization, topic, technology)
+- A category or tag
+
+Each node has:
+- A unique ID
+- A type (bookmark, entity, category, etc.)
+- Properties specific to its type
+- A label for visualization
+
+### 3. kgot_edges.jsonl
+
+This file contains the edges (connections) of the knowledge graph in JSONL format. Each line represents a relationship between two nodes, such as:
+
+- Bookmark → Category
+- Bookmark → Entity
+- Entity → Entity
+- Bookmark → Bookmark (related content)
+
+Each edge has:
+- Source node ID
+- Target node ID
+- Relationship type
+- Weight or strength
+- Properties specific to the relationship type
+
+### 4. kgot_graph.json
+
+This file contains the complete graph representation in JSON format, combining both nodes and edges in a structure that can be directly loaded into graph visualization tools. It includes:
+
+- An array of all nodes
+- An array of all edges
+- Graph metadata
+- Visualization settings
+
+## Advanced Processing Options
+
+You can customize KGoT processing by using the custom mode with specific options:
+
+```bash
+./process-bookmarks.sh custom "--processor=kgot" "--entity-threshold=0.7" "--max-connections=50"
+```
+
+Some useful options include:
+
+- `--entity-threshold`: Confidence threshold for entity extraction (0.0-1.0)
+- `--max-connections`: Maximum number of connections per node
+- `--include-content`: Whether to include full content in the graph
+- `--cluster-method`: Algorithm for clustering related content
+- `--graph-format`: Format for the graph output (default: JSON)
+
+## Using the Output
+
+The output files from KGoT processing can be used in various ways:
+
+- **Data Analysis**: Analyze the JSONL files using data analysis tools
+- **Visualization**: Load the graph JSON into visualization tools
+- **Integration**: Import the nodes and edges into other graph databases
+- **Querying**: Use graph query languages to extract insights
+- **Export**: Convert to different formats for sharing or publication
+
+## Next Steps
+
+- Learn how to [import and export](./import-export) KGoT data
+- Explore [visualization options](./visualization) for your knowledge graph
+- See the [technical details](../technical/graph-structure) of the graph structure 

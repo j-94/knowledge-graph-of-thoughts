@@ -1,0 +1,137 @@
+# Visualizing Your Knowledge Graph
+
+> **Under Construction**
+>
+> This section is currently under development. When completed, it will provide information about:
+>
+> - Interactive visualization options for your knowledge graph
+> - Export formats for use with specialized visualization tools
+> - Customization options for graph appearance
+> - Techniques for exploring and navigating your graph
+>
+> Expected completion: Q3 2025
+
+## Why Visualize Your Knowledge Graph?
+
+Visualization provides several benefits:
+
+- **Discover Connections**: Identify relationships between topics that weren't obvious
+- **Find Clusters**: See which topics are most connected in your knowledge
+- **Identify Gaps**: Discover areas where your knowledge might be incomplete
+- **Navigate Knowledge**: Use the graph as an interactive way to explore your bookmarks
+- **Share Insights**: Generate visual representations to share with others
+
+## Built-in Visualization
+
+The Knowledge Graph of Thoughts system includes a basic built-in visualization tool that you can access directly from your processed data.
+
+To generate a visualization using the built-in tool:
+
+```bash
+./process-bookmarks.sh visualize
+```
+
+This command:
+1. Takes the `kgot_graph.json` file from your output directory
+2. Generates an interactive HTML visualization
+3. Opens the visualization in your default browser
+
+The built-in visualization offers:
+- Force-directed graph layout
+- Node coloring by type (bookmark, entity, category)
+- Interactive zooming and panning
+- Node selection to view details
+- Filtering by node type and relationship
+
+## Export Options for Advanced Visualization
+
+For more advanced visualization options, you can export your knowledge graph to specialized visualization tools.
+
+### Exporting to Gephi
+
+[Gephi](https://gephi.org/) is a powerful open-source network analysis and visualization software.
+
+To export your knowledge graph for Gephi:
+
+```bash
+./process-bookmarks.sh export --format=gephi
+```
+
+This generates a GEXF file in your output directory that you can open directly in Gephi. With Gephi, you can:
+
+- Apply advanced layout algorithms
+- Calculate network metrics (centrality, modularity, etc.)
+- Create high-quality renderings for publication
+- Perform community detection
+- Filter and transform your graph dynamically
+
+### Exporting to Neo4j
+
+[Neo4j](https://neo4j.com/) is a graph database that includes powerful visualization capabilities.
+
+To export your knowledge graph for Neo4j:
+
+```bash
+./process-bookmarks.sh export --format=neo4j
+```
+
+This generates CSV files formatted for Neo4j import. After importing into Neo4j, you can:
+
+- Use Neo4j Browser for interactive visualization
+- Write Cypher queries to extract specific subgraphs
+- Apply graph algorithms through Neo4j's Graph Data Science library
+- Set up a persistent graph database for ongoing use
+
+### Exporting to D3.js
+
+[D3.js](https://d3js.org/) is a JavaScript library for creating custom interactive visualizations.
+
+The standard `kgot_graph.json` output is already compatible with D3.js. You can use it directly with D3 visualization templates or create custom visualizations.
+
+## Customizing Visualizations
+
+When using the built-in visualization, you can apply various customizations:
+
+```bash
+./process-bookmarks.sh visualize --layout=radial --theme=dark --highlight-clusters
+```
+
+Available customization options include:
+
+- **Layouts**: force, radial, hierarchical, circular
+- **Themes**: light, dark, colorful, monochrome
+- **Node Size**: by degree, by type, uniform
+- **Edge Thickness**: by weight, uniform
+- **Highlighting**: clusters, recent additions, specific tags
+
+## Embedding Visualizations
+
+You can embed the knowledge graph visualization in your own web applications:
+
+1. Include the generated visualization files in your web project
+2. Use the provided KGoT Viewer component to display the graph
+3. Customize the appearance and behavior through the API
+
+Example embedding code:
+
+```html
+<div id="kgot-visualization" style="width: 100%; height: 600px;"></div>
+<script src="path/to/kgot-viewer.js"></script>
+<script>
+  const viewer = new KGoTViewer({
+    container: 'kgot-visualization',
+    dataPath: 'path/to/kgot_graph.json',
+    theme: 'dark',
+    layout: 'force',
+    nodeSize: 'degree'
+  });
+  
+  viewer.initialize();
+</script>
+```
+
+## Next Steps
+
+- Learn about [analyzing your knowledge graph](./analysis) for insights
+- Explore options for [sharing your knowledge graph](./sharing)
+- See how to [update and maintain](./maintenance) your knowledge graph over time 

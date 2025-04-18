@@ -1,0 +1,129 @@
+# Installation and Setup
+
+This guide helps you set up the Knowledge Graph of Thoughts system and its dependencies.
+
+## Prerequisites
+
+Before installing the KGoT system, ensure you have:
+
+- Docker and Docker Compose installed
+- Python 3.10 or higher
+- Git (to clone the repository)
+- Basic command-line knowledge
+
+## System Requirements
+
+- **Operating System**: macOS, Linux, or Windows with WSL2
+- **Storage**: At least 1GB of free disk space
+- **Memory**: At least 4GB RAM
+- **CPU**: Any modern multi-core processor
+
+## Installation Steps
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/knowledge-graph-of-thoughts.git
+cd knowledge-graph-of-thoughts
+```
+
+### 2. Set Up Directory Structure
+
+The system requires several directories for operation:
+
+```bash
+# Create the output directory
+mkdir -p output
+
+# Create the KGoT directory structure
+mkdir -p kgot/data kgot/backups kgot/indices
+```
+
+### 3. Prepare Sample Data (Optional)
+
+If you don't have your own bookmark data, you can use sample data:
+
+```bash
+# Create a sample data file
+cat > data-bookmark-sample.jsonl << EOF
+{"id": 1, "url": "https://github.com/example/repo", "source": "github", "created_at": "2025-01-01T12:00:00Z", "content": "Example GitHub Repository", "metadata": {"language": "Python", "stars": 100, "forks": 10}}
+{"id": 2, "url": "https://twitter.com/example/status/12345", "source": "twitter", "created_at": "2025-01-02T12:00:00Z", "content": "Example Tweet", "metadata": {"likes": 50, "retweets": 10}}
+EOF
+
+# Copy to the main data file
+cp data-bookmark-sample.jsonl data-bookmark.jsonl
+```
+
+### 4. Build the Docker Container
+
+```bash
+docker-compose build
+```
+
+This will build the Docker image with all necessary Python dependencies.
+
+## Verifying the Installation
+
+Run a test process to verify that everything is working:
+
+```bash
+./process-bookmarks.sh standard
+```
+
+Check the output directory to see if files were created:
+
+```bash
+ls -la output/
+```
+
+You should see an `organized-bookmarks.jsonl` file if everything is working correctly.
+
+## Setting Up the KGoT System
+
+The KGoT system needs additional setup:
+
+1. **Import Script**: Ensure the import script is executable:
+
+```bash
+chmod +x kgot/import.py
+```
+
+2. **First Run**: Process the bookmarks with the KGoT processor:
+
+```bash
+./process-bookmarks.sh kgot
+```
+
+3. **Export to KGoT**: Export the processed data to the KGoT data directory:
+
+```bash
+./process-bookmarks.sh kgot-export
+```
+
+4. **Import into KGoT**: Import the data into the KGoT system:
+
+```bash
+./process-bookmarks.sh kgot-import
+```
+
+## Checking Your Installation
+
+Verify that all components are properly set up:
+
+1. Check the output directory for processed files
+2. Check the KGoT data directory for graph files
+3. Check the KGoT indices directory for metadata files
+4. Check the KGoT backups directory for backup files
+
+If all these directories contain the expected files, your system is ready to use!
+
+## Next Steps
+
+Now that your system is set up, you can:
+
+1. Process your own bookmark data
+2. Explore the different processing modes
+3. Use the KGoT system for knowledge management
+4. Integrate with other tools and systems
+
+See the [Processing Modes](features/processing-modes) section for more information on how to use the system. 

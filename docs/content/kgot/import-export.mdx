@@ -1,0 +1,109 @@
+# KGoT Import and Export
+
+> **Under Construction**
+>
+> This section is currently under development. When completed, it will provide information about:
+>
+> - Exporting processed data to the KGoT system
+> - Importing data into the KGoT knowledge graph
+> - Backup and recovery procedures
+> - Data migration between environments
+>
+> Expected completion: Q3 2025
+
+## Export Process
+
+The export process moves processed graph data from the output directory to the KGoT data directory structure, making it available for the KGoT system.
+
+### Directory Structure
+
+The KGoT system uses the following directory structure:
+
+```
+kgot/
+├── data/           # Primary data store for graph files
+│   ├── kgot_nodes.jsonl
+│   ├── kgot_edges.jsonl
+│   └── kgot_graph.json
+├── backups/        # Backup storage for imported data
+│   └── import_bookmarks_TIMESTAMP.json
+├── indices/        # Index files for metadata about imports
+│   └── bookmarks_index.json
+└── import.py       # Import tool script
+```
+
+### Running Export
+
+To export your processed data to the KGoT system:
+
+```bash
+./process-bookmarks.sh kgot-export
+```
+
+This command:
+1. Checks if the KGoT data directory exists (`kgot/data/`)
+2. Copies the processed graph files to the KGoT data directory
+3. Provides confirmation that files were exported successfully
+
+## Import Process
+
+The import process takes the graph data files and formally imports them into the KGoT system, creating appropriate indices and backups.
+
+### Import Steps
+
+The import process:
+
+1. Loads the graph data from the specified file
+2. Creates a timestamped backup in the `kgot/backups/` directory
+3. Generates metadata about the import in the `kgot/indices/` directory
+4. Provides statistics about the imported nodes and edges
+
+### Running Import
+
+To import your processed data into the KGoT system:
+
+```bash
+./process-bookmarks.sh kgot-import
+```
+
+This command uses the `import.py` script to:
+1. Load and validate the graph data
+2. Create a backup of the imported data
+3. Generate an index with metadata about the import
+4. Report statistics about the imported data
+
+## Import Script
+
+The import script (`kgot/import.py`) is a Python tool that handles the formal import process. It can also be used directly:
+
+```bash
+python3 kgot/import.py --input output/kgot_graph.json --source bookmarks
+```
+
+This gives you more control over the source identifier and input file.
+
+## Index Metadata
+
+The import process creates an index file with metadata about the import:
+
+```json
+{
+  "source": "bookmarks",
+  "imported_at": "2025-04-18T16:06:16.296288",
+  "node_count": 8589,
+  "edge_count": 1218,
+  "data_path": "/path/to/kgot/data"
+}
+```
+
+This metadata is useful for tracking imports and understanding the content of your knowledge graph.
+
+## Complete Workflow
+
+The complete KGoT workflow typically involves:
+
+1. Process bookmarks: `./process-bookmarks.sh kgot`
+2. Export to KGoT: `./process-bookmarks.sh kgot-export` 
+3. Import into KGoT: `./process-bookmarks.sh kgot-import`
+
+This three-step process ensures your bookmark data is properly processed, structured, and integrated with the KGoT system. 

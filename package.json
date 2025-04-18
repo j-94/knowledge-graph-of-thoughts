@@ -1,0 +1,52 @@
+{
+  "name": "task-master-project",
+  "version": "0.1.0",
+  "description": "A project managed with Task Master AI",
+  "author": "Vibe coder",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "list": "node scripts/dev.js list",
+    "generate": "node scripts/dev.js generate",
+    "parse-prd": "node scripts/dev.js parse-prd"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "boxen": "^8.0.1",
+    "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5",
+    "commander": "^11.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.21.2",
+    "fastmcp": "^1.20.5",
+    "figlet": "^1.8.0",
+    "fuse.js": "^7.0.0",
+    "gradient-string": "^3.0.0",
+    "helmet": "^8.1.0",
+    "inquirer": "^12.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "lru-cache": "^10.2.0",
+    "next": "^15.3.1",
+    "openai": "^4.89.0",
+    "ora": "^8.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j-94/knowledge-graph-of-thoughts.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/j-94/knowledge-graph-of-thoughts/issues"
+  },
+  "homepage": "https://github.com/j-94/knowledge-graph-of-thoughts#readme"
+}

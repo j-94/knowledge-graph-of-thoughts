@@ -1,0 +1,142 @@
+# Bookmark Processing Modes
+
+The Knowledge Graph of Thoughts system offers multiple processing modes to handle bookmarks in different ways. Each mode is optimized for specific use cases and outputs.
+
+## Available Processing Modes
+
+You can use the following modes with the `process-bookmarks.sh` script:
+
+### Standard Mode
+
+```bash
+./process-bookmarks.sh standard
+```
+
+The standard mode processes all bookmarks with default settings:
+- Reads from the default input file (`/app/data/bookmarks.jsonl`)
+- Generates a structured output file (`/app/output/organized-bookmarks.jsonl`)
+- Applies basic metadata extraction and organization
+- Preserves all bookmarks regardless of source or date
+
+Use standard mode when you want to process your entire bookmark collection without any filtering.
+
+### Markdown Mode
+
+```bash
+./process-bookmarks.sh markdown
+```
+
+The markdown mode converts your bookmarks into a structured markdown document:
+- Creates a hierarchical markdown document organized by topics
+- Includes titles, URLs, descriptions, and dates
+- Formats the output for easy reading and sharing
+- Generates the file in `/app/output/bookmarks.md`
+
+This mode is useful for creating human-readable documents from your bookmarks or for sharing collections.
+
+### Recent Mode
+
+```bash
+./process-bookmarks.sh recent
+```
+
+The recent mode filters bookmarks to only process those added after January 1, 2023:
+- Applies date filtering during processing
+- Only includes bookmarks with timestamps after 2023-01-01
+- Generates output in `/app/output/recent-bookmarks.jsonl`
+
+Use this mode when you want to focus only on recently added bookmarks.
+
+### GitHub Mode
+
+```bash
+./process-bookmarks.sh github
+```
+
+The GitHub mode specifically processes GitHub repositories and pages:
+- Filters bookmarks to only include GitHub URLs
+- Extracts additional GitHub-specific metadata (repo owner, name, topics)
+- Generates output in `/app/output/github-bookmarks.jsonl`
+
+This mode is ideal for organizing programming resources and repositories.
+
+### Twitter Mode
+
+```bash
+./process-bookmarks.sh twitter
+```
+
+The Twitter mode processes Twitter/X bookmarks:
+- Filters bookmarks to only include Twitter URLs
+- Extracts Twitter-specific metadata (user, tweet ID)
+- Generates output in `/app/output/twitter-bookmarks.jsonl`
+
+Use this mode to organize your Twitter bookmarks separately.
+
+### KGoT Mode
+
+```bash
+./process-bookmarks.sh kgot
+```
+
+The KGoT mode prepares bookmarks for the Knowledge Graph of Thoughts system:
+- Adds additional metadata needed for graph generation
+- Creates context relationships between bookmarks
+- Performs deeper content analysis
+- Generates output in `/app/output/kgot-bookmarks.json`
+
+This mode is the first step in creating a knowledge graph from your bookmarks.
+
+### Custom Mode
+
+```bash
+./process-bookmarks.sh custom "option1=value1" "option2=value2"
+```
+
+The custom mode allows you to pass custom arguments directly to the processor:
+- Specify any supported processor options as arguments
+- Control filtering, output format, and processing parameters
+- Customize the processing to your specific needs
+
+This mode is for advanced users who need full control over the processing parameters.
+
+### Clean Mode
+
+```bash
+./process-bookmarks.sh clean
+```
+
+The clean mode removes generated output files and Docker images:
+- Deletes all files in the output directory
+- Optionally removes the Docker image to free up space
+- Provides a clean slate for new processing operations
+
+Use this mode when you want to start fresh or clean up disk space.
+
+## Examples
+
+### Process GitHub bookmarks and export as markdown
+
+```bash
+./process-bookmarks.sh github
+./process-bookmarks.sh markdown
+```
+
+### Process recent bookmarks with custom options
+
+```bash
+./process-bookmarks.sh custom "--start-date=2023-06-01" "--format=json" "--output-file=summer-bookmarks.json"
+```
+
+### Complete KGoT processing workflow
+
+```bash
+./process-bookmarks.sh kgot
+./process-bookmarks.sh kgot-export
+./process-bookmarks.sh kgot-import
+```
+
+## Next Steps
+
+- See [KGoT Processing](../kgot/processing) for more details on how the KGoT mode works
+- Check [Import and Export](../kgot/import-export) to learn how to move data in and out of the KGoT system 
