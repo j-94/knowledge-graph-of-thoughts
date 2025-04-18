@@ -1,0 +1,48 @@
+# Test Environment Configuration
+
+# Database settings for testing
+database:
+  # Use an in-memory or test-specific database
+  host: neo4j
+  port: 7687
+  user: neo4j
+  password: password
+  database_name: neo4j_test
+  
+# Bookmark processing settings for testing
+bookmark_processing:
+  # Small batches for testing
+  batch_size: 50
+  max_workers: 1
+  timeout_seconds: 60
+  
+  # Strict validation for testing
+  validation:
+    strict_mode: true
+    fail_fast: true
+    
+# Embedding settings for testing
+embeddings:
+  # Use a smaller model for faster tests
+  model_name: "sentence-transformers/paraphrase-MiniLM-L6-v2"
+  dimension: 384
+  # Disable caching for consistent test results
+  cache_enabled: false
+  
+# Relationship settings for testing
+relationships:
+  # Consistent thresholds for testing
+  similarity_threshold: 0.7
+  tag_overlap_min: 1
+  max_temporal_distance_hours: 12
+  
+# Logging settings for testing
+logging:
+  level: WARNING  # Less verbose for test runs
+  file: "/app/logs/bookmark_processing_test.log"
+  
+# API settings for testing
+api:
+  port: 8001  # Different port for testing
+  debug: false
+  enable_docs: false 

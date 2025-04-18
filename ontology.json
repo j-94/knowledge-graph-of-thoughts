@@ -1,0 +1,275 @@
+{
+  "name": "KGoT Custom Ontology",
+  "description": "A custom ontology for Knowledge Graph of Thoughts",
+  "version": "1.0",
+  
+  "nodeTypes": [
+    {
+      "type": "bookmark",
+      "prefix": "b",
+      "description": "A web bookmark",
+      "predefined": false
+    },
+    {
+      "type": "tag",
+      "prefix": "t",
+      "description": "A tag or keyword",
+      "predefined": false
+    },
+    {
+      "type": "category",
+      "prefix": "c",
+      "description": "A high-level category of content",
+      "predefined": true,
+      "items": [
+        { "id": "prog", "name": "Programming", "icon": "code" },
+        { "id": "data", "name": "Data Science", "icon": "chart-bar" },
+        { "id": "ai", "name": "Artificial Intelligence", "icon": "brain" },
+        { "id": "web", "name": "Web Development", "icon": "globe" },
+        { "id": "mobile", "name": "Mobile Development", "icon": "mobile" },
+        { "id": "devops", "name": "DevOps", "icon": "server" },
+        { "id": "security", "name": "Security", "icon": "shield" },
+        { "id": "design", "name": "Design", "icon": "paint-brush" },
+        { "id": "business", "name": "Business", "icon": "briefcase" },
+        { "id": "other", "name": "Other", "icon": "folder" }
+      ]
+    },
+    {
+      "type": "technology",
+      "prefix": "tech",
+      "description": "A specific technology or framework",
+      "predefined": true,
+      "items": [
+        { "id": "javascript", "name": "JavaScript", "category": "prog" },
+        { "id": "python", "name": "Python", "category": "prog" },
+        { "id": "react", "name": "React", "category": "web" },
+        { "id": "vue", "name": "Vue.js", "category": "web" },
+        { "id": "angular", "name": "Angular", "category": "web" },
+        { "id": "node", "name": "Node.js", "category": "web" },
+        { "id": "django", "name": "Django", "category": "web" },
+        { "id": "flask", "name": "Flask", "category": "web" },
+        { "id": "tensorflow", "name": "TensorFlow", "category": "ai" },
+        { "id": "pytorch", "name": "PyTorch", "category": "ai" },
+        { "id": "pandas", "name": "Pandas", "category": "data" },
+        { "id": "docker", "name": "Docker", "category": "devops" },
+        { "id": "kubernetes", "name": "Kubernetes", "category": "devops" },
+        { "id": "aws", "name": "AWS", "category": "devops" }
+      ]
+    },
+    {
+      "type": "source",
+      "prefix": "src",
+      "description": "Source of the bookmark",
+      "predefined": true,
+      "items": [
+        { "id": "github", "name": "GitHub", "icon": "github" },
+        { "id": "twitter", "name": "Twitter", "icon": "twitter" },
+        { "id": "medium", "name": "Medium", "icon": "medium" },
+        { "id": "stackoverflow", "name": "Stack Overflow", "icon": "stack-overflow" },
+        { "id": "dev", "name": "DEV.to", "icon": "dev" },
+        { "id": "other", "name": "Other", "icon": "link" }
+      ]
+    }
+  ],
+  
+  "relationTypes": [
+    {
+      "type": "has_tag",
+      "description": "A bookmark has a particular tag",
+      "sourceNodeType": "bookmark",
+      "targetNodeType": "tag"
+    },
+    {
+      "type": "belongs_to",
+      "description": "A bookmark belongs to a category",
+      "sourceNodeType": "bookmark",
+      "targetNodeType": "category"
+    },
+    {
+      "type": "uses",
+      "description": "A bookmark uses a technology",
+      "sourceNodeType": "bookmark",
+      "targetNodeType": "technology",
+      "rules": [
+        {
+          "sourceNodeType": "bookmark",
+          "targetNodeType": "technology",
+          "conditions": [
+            {
+              "sourceProperty": "content",
+              "targetProperty": "name",
+              "match": "contains"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "from",
+      "description": "A bookmark is from a particular source",
+      "sourceNodeType": "bookmark",
+      "targetNodeType": "source",
+      "rules": [
+        {
+          "sourceNodeType": "bookmark",
+          "targetNodeType": "source",
+          "conditions": [
+            {
+              "sourceProperty": "source",
+              "targetProperty": "id",
+              "match": "exact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "related_to",
+      "description": "A technology is related to another technology",
+      "sourceNodeType": "technology",
+      "targetNodeType": "technology",
+      "rules": [
+        {
+          "sourceNodeType": "technology",
+          "targetNodeType": "technology",
+          "conditions": [
+            {
+              "sourceProperty": "category",
+              "targetProperty": "category",
+              "match": "exact"
+            }
+          ],
+          "properties": {
+            "strength": 0.5
+          }
+        }
+      ]
+    }
+  ],
+  
+  "categoryMappings": {
+    "technology": [
+      {
+        "sourceMatch": "github",
+        "metadataField": "language",
+        "nodeTypePrefix": "tech",
+        "targetCategory": "javascript",
+        "relationType": "uses",
+        "condition": {
+          "field": "language",
+          "value": "JavaScript"
+        }
+      },
+      {
+        "sourceMatch": "github",
+        "metadataField": "language",
+        "nodeTypePrefix": "tech",
+        "targetCategory": "python",
+        "relationType": "uses",
+        "condition": {
+          "field": "language",
+          "value": "Python"
+        }
+      },
+      {
+        "urlPattern": "react",
+        "nodeTypePrefix": "tech",
+        "targetCategory": "react",
+        "relationType": "uses"
+      },
+      {
+        "urlPattern": "vue",
+        "nodeTypePrefix": "tech",
+        "targetCategory": "vue",
+        "relationType": "uses"
+      },
+      {
+        "urlPattern": "tensorflow",
+        "nodeTypePrefix": "tech",
+        "targetCategory": "tensorflow",
+        "relationType": "uses"
+      }
+    ],
+    "category": [
+      {
+        "urlPattern": "github.com",
+        "nodeTypePrefix": "c",
+        "targetCategory": "prog",
+        "relationType": "belongs_to"
+      },
+      {
+        "urlPattern": "tensorflow.org",
+        "nodeTypePrefix": "c",
+        "targetCategory": "ai",
+        "relationType": "belongs_to"
+      },
+      {
+        "urlPattern": "react",
+        "nodeTypePrefix": "c",
+        "targetCategory": "web",
+        "relationType": "belongs_to"
+      },
+      {
+        "urlPattern": "aws",
+        "nodeTypePrefix": "c",
+        "targetCategory": "devops",
+        "relationType": "belongs_to"
+      },
+      {
+        "urlPattern": "docker",
+        "nodeTypePrefix": "c",
+        "targetCategory": "devops",
+        "relationType": "belongs_to"
+      }
+    ],
+    "source": [
+      {
+        "sourceMatch": "github",
+        "nodeTypePrefix": "src",
+        "targetCategory": "github",
+        "relationType": "from"
+      },
+      {
+        "sourceMatch": "twitter",
+        "nodeTypePrefix": "src",
+        "targetCategory": "twitter",
+        "relationType": "from"
+      },
+      {
+        "urlPattern": "medium.com",
+        "nodeTypePrefix": "src",
+        "targetCategory": "medium",
+        "relationType": "from"
+      },
+      {
+        "urlPattern": "stackoverflow.com",
+        "nodeTypePrefix": "src",
+        "targetCategory": "stackoverflow",
+        "relationType": "from"
+      },
+      {
+        "urlPattern": "dev.to",
+        "nodeTypePrefix": "src",
+        "targetCategory": "dev",
+        "relationType": "from"
+      }
+    ]
+  },
+  
+  "entityTypes": [
+    "person",
+    "organization",
+    "product",
+    "framework",
+    "language",
+    "tool",
+    "concept"
+  ],
+  
+  "settings": {
+    "defaultNodeSize": 5,
+    "defaultEdgeWeight": 1,
+    "graphLayout": "force-directed",
+    "colorScheme": "category"
+  }
+} 

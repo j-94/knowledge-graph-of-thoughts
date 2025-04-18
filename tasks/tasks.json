@@ -1,0 +1,162 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Setup Data Processing Environment",
+      "description": "Initialize the project structure and install required libraries for bookmark data processing.",
+      "status": "done",
+      "dependencies": [],
+      "priority": "high",
+      "details": "Create a new Python project with the following structure:\n- src/\n  - data/\n  - models/\n  - api/\n  - utils/\n- tests/\n- config/\n\nInstall required libraries with specific versions:\n- pandas==2.2.2\n- sentence-transformers\n- networkx\n- neo4j\n- fastapi\n- uvicorn\n- pydantic\n\nCreate configuration files for different environments (dev, test, prod) with database connection parameters and processing settings.",
+      "testStrategy": "Verify all dependencies install correctly and project structure is properly initialized. Create a simple test script that imports all libraries to ensure they're working properly.",
+      "subtasks": [
+        {
+          "id": 1,
+          "title": "Create Project Directory Structure",
+          "description": "Set up the initial project folder structure with all required directories",
+          "dependencies": [],
+          "details": "1. Create the root project directory\n2. Create the following subdirectories:\n   - src/ with subdirectories for data/, models/, api/, and utils/\n   - tests/ directory for unit and integration tests\n   - config/ directory for configuration files\n3. Create placeholder __init__.py files in each Python package directory to make them importable\n4. Create a README.md file with project description and setup instructions\n5. Testing approach: Verify all directories exist with correct structure\n\n<info added on 2025-04-18T14:29:59.357Z>\nBased on the existing project structure, here's additional information for the directory structure subtask:\n\n```\nINTEGRATION NOTES:\n\nInstead of creating a new structure from scratch, we should integrate our bookmark processing functionality into the existing structure:\n\n1. Utilize the existing 'kgot/' package structure:\n   - Add bookmark-specific utilities to 'kgot/utils/'\n   - Implement bookmark graph models in 'kgot/knowledge_graph/'\n   - Create bookmark-specific tools in 'kgot/tools/bookmark_tools/'\n\n2. For data processing:\n   - Leverage the existing 'data_analysis/src/data_loaders/jsonl_loader.py' for bookmark data\n   - Create a new 'data_analysis/src/data_loaders/bookmark_loader.py' that extends jsonl_loader functionality\n   - Add bookmark-specific transformations in 'data_analysis/src/transformers/bookmark_transformer.py'\n\n3. Configuration:\n   - Add bookmark-specific configuration in 'config/bookmark_config.yaml'\n   - Include sample bookmark data in 'data_analysis/examples/bookmarks/'\n\n4. Testing:\n   - Create bookmark-specific tests in 'tests/test_bookmark_processing.py'\n   - Add integration tests that verify the full bookmark-to-knowledge-graph pipeline\n```\n</info added on 2025-04-18T14:29:59.357Z>",
+          "status": "done",
+          "parentTaskId": 1
+        },
+        {
+          "id": 2,
+          "title": "Set Up Python Environment and Dependencies",
+          "description": "Create a virtual environment and install all required libraries with specific versions",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create a virtual environment using venv or conda\n2. Create requirements.txt file with the specified dependencies and versions:\n   - pandas==2.2.2\n   - sentence-transformers\n   - networkx\n   - neo4j\n   - fastapi\n   - uvicorn\n   - pydantic\n3. Install all dependencies using pip install -r requirements.txt\n4. Create setup.py file for package installation\n5. Testing approach: Write a simple script that imports each library to verify successful installation\n\n<info added on 2025-04-18T14:32:10.292Z>\nAdd the following to the details section:\n\nSince the project uses a pyproject.toml file for dependency management, we should adapt our approach:\n\n1. Use the existing pyproject.toml instead of creating requirements.txt and setup.py\n2. Additional dependencies to consider:\n   - beautifulsoup4 for HTML parsing\n   - langchain for LLM integration\n   - python-dotenv for environment variables\n   - transformers (alternative to sentence-transformers)\n\n3. Installation commands:\n```bash\n# Create and activate virtual environment\npython -m venv .venv\nsource .venv/bin/activate  # Unix/macOS\n# or\n.venv\\Scripts\\activate  # Windows\n\n# Install package in development mode\npip install -e .\n```\n\n4. Verify installation with a test script that imports all dependencies:\n```python\nimport pandas as pd\nimport networkx as nx\nfrom neo4j import GraphDatabase\nfrom fastapi import FastAPI\nfrom pydantic import BaseModel\nimport transformers\n# Test additional dependencies\nfrom bs4 import BeautifulSoup\nfrom langchain.llms import OpenAI\nfrom dotenv import load_dotenv\n```\n</info added on 2025-04-18T14:32:10.292Z>\n\n<info added on 2025-04-18T14:35:03.195Z>\n<info added on 2025-04-19T09:15:22.123Z>\n## Docker-based Environment Alternative\n\nAfter examining the project structure, we should leverage the existing Docker-based environment in the data_analysis directory instead of creating a new Python environment:\n\n1. **Existing Docker Configuration**:\n   - Located in `data_analysis/` directory\n   - Includes Python 3.11 container with pandas 2.2.2 and all required dependencies\n   - Pre-configured Neo4j database container\n   - Jupyter Lab for interactive development\n\n2. **Benefits of using the Docker approach**:\n   - Consistent environment across all development machines\n   - Neo4j database pre-configured with proper settings\n   - Isolated environment prevents dependency conflicts\n   - Includes JsonlDataLoader utility specifically designed for large JSONL files\n\n3. **Setup instructions**:\n```bash\n# Navigate to the data_analysis directory\ncd data_analysis\n\n# Start the Docker environment\ndocker-compose up -d\n\n# Access Jupyter Lab (available at http://localhost:8888)\n# Password is in the docker-compose logs\n\n# To stop the environment when finished\ndocker-compose down\n```\n\n4. **Development workflow**:\n   - Develop bookmark processing code within Jupyter notebooks\n   - Use the existing JsonlDataLoader for the data-bookmark.jsonl file\n   - Access Neo4j at http://localhost:7474 (credentials in docker-compose.yml)\n   - Export final code to Python modules when complete\n\nThis approach eliminates the need for manual environment setup while providing all required dependencies in a consistent, isolated environment.\n</info added on 2025-04-19T09:15:22.123Z>\n</info added on 2025-04-18T14:35:03.195Z>",
+          "status": "done",
+          "parentTaskId": 1
+        },
+        {
+          "id": 3,
+          "title": "Create Configuration Files for Different Environments",
+          "description": "Set up configuration files for development, testing, and production environments",
+          "dependencies": [
+            1
+          ],
+          "details": "1. Create a base_config.yaml file with common settings\n2. Create environment-specific config files:\n   - dev_config.yaml\n   - test_config.yaml\n   - prod_config.yaml\n3. Include the following parameters in each config:\n   - Database connection parameters (host, port, username, password)\n   - Processing settings (batch size, timeout values, etc.)\n   - Logging configuration\n4. Create a config.py utility in src/utils/ to load and parse configuration\n5. Testing approach: Write unit tests that load each config file and verify all required parameters are present",
+          "status": "done",
+          "parentTaskId": 1
+        },
+        {
+          "id": 4,
+          "title": "Implement Configuration Loading Utility",
+          "description": "Create a utility module to load and validate configuration settings",
+          "dependencies": [
+            2,
+            3
+          ],
+          "details": "1. Create src/utils/config.py module\n2. Implement a ConfigLoader class with methods to:\n   - Load YAML configuration files\n   - Merge base config with environment-specific configs\n   - Validate required configuration parameters\n   - Provide typed access to configuration values\n3. Use Pydantic models to define configuration schemas\n4. Implement environment variable overrides for sensitive values\n5. Testing approach: Write unit tests for loading each environment config and accessing values",
+          "status": "done",
+          "parentTaskId": 1
+        },
+        {
+          "id": 5,
+          "title": "Create Project Initialization Script",
+          "description": "Develop a script to initialize the project with proper environment setup",
+          "dependencies": [
+            2,
+            3,
+            4
+          ],
+          "details": "1. Create an initialize.py script in the project root\n2. Implement functionality to:\n   - Check and create the virtual environment if not exists\n   - Install required dependencies\n   - Verify database connectivity using config settings\n   - Create any required database schemas or collections\n   - Set up logging based on configuration\n3. Add command-line arguments to specify the environment (dev/test/prod)\n4. Include a --reset flag to clean and reinitialize when needed\n5. Testing approach: Run the script with different environment flags and verify proper initialization",
+          "status": "done",
+          "parentTaskId": 1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Implement Bookmark Data Loading and Validation",
+      "description": "Create functionality to load bookmark data from JSONL files and validate against the required schema.",
+      "status": "done",
+      "dependencies": [
+        1
+      ],
+      "priority": "high",
+      "details": "Implement a BookmarkLoader class that:\n1. Uses pandas to load JSONL files\n2. Validates each bookmark entry against the required schema (id, title, url, tags, timestamp, description, content, source, metadata)\n3. Handles missing optional fields\n4. Performs data cleaning and normalization\n5. Implements error handling for malformed entries\n\nCreate a Pydantic model for bookmark validation with all required fields. Implement methods to export validated data for the next processing steps.",
+      "testStrategy": "Create test cases with valid and invalid JSONL data. Verify validation correctly identifies missing required fields. Test with edge cases like empty files, malformed JSON, and special characters."
+    },
+    {
+      "id": 3,
+      "title": "Develop Embedding Generation Module",
+      "description": "Create a module to generate vector embeddings for bookmark content using sentence-transformers.",
+      "status": "done",
+      "dependencies": [
+        2
+      ],
+      "priority": "high",
+      "details": "Implement an EmbeddingGenerator class that:\n1. Uses sentence-transformers to create embeddings from bookmark content and titles\n2. Handles batching for efficient processing\n3. Implements caching to avoid reprocessing unchanged content\n4. Provides methods to retrieve embeddings by bookmark ID\n5. Includes configurable model selection (default to an appropriate sentence-transformer model)\n\nEnsure the module can handle different content lengths and empty content fields by falling back to title-only embeddings when necessary.",
+      "testStrategy": "Test embedding generation with various text inputs. Verify embeddings have the expected dimensionality. Benchmark processing speed to ensure it meets the >100 bookmarks/second requirement. Test caching mechanism effectiveness."
+    },
+    {
+      "id": 4,
+      "title": "Implement Knowledge Graph Node Creation",
+      "description": "Build functionality to transform validated bookmark data into knowledge graph nodes.",
+      "status": "pending",
+      "dependencies": [
+        3
+      ],
+      "priority": "medium",
+      "details": "Create a NodeGenerator class that:\n1. Transforms bookmark data into graph nodes with required properties (id, type, properties, embeddings)\n2. Extracts additional concepts and entities from bookmark content to create concept nodes\n3. Uses networkx for initial graph representation\n4. Implements methods to export nodes in a format compatible with Neo4j\n5. Handles node deduplication and updates to existing nodes\n\nEnsure all bookmark attributes are properly mapped to node properties and embeddings are attached to the appropriate nodes.",
+      "testStrategy": "Test node creation with sample bookmark data. Verify all required node properties are present. Test concept extraction accuracy. Verify node deduplication works correctly for updates to existing bookmarks."
+    },
+    {
+      "id": 5,
+      "title": "Develop Edge Generation and Relationship Identification",
+      "description": "Create functionality to identify and generate relationships between nodes in the knowledge graph.",
+      "status": "pending",
+      "dependencies": [
+        4
+      ],
+      "priority": "medium",
+      "details": "Implement an EdgeGenerator class that:\n1. Identifies relationships between nodes based on:\n   - Content similarity (using embedding cosine similarity)\n   - Shared tags\n   - Temporal proximity\n   - Entity co-occurrence\n2. Assigns relationship types and weights (0.0-1.0)\n3. Adds metadata to edges for additional context\n4. Uses configurable thresholds for relationship creation\n5. Implements methods to export edges in Neo4j-compatible format\n\nEnsure the implementation can achieve >85% accuracy in relationship identification as specified in success metrics.",
+      "testStrategy": "Test relationship identification with known related content. Measure precision and recall of relationship detection. Verify edge weights are properly calculated. Test with various similarity thresholds to find optimal settings."
+    },
+    {
+      "id": 6,
+      "title": "Implement Neo4j Integration and Graph Storage",
+      "description": "Develop functionality to store the generated knowledge graph in Neo4j database.",
+      "status": "pending",
+      "dependencies": [
+        5
+      ],
+      "priority": "medium",
+      "details": "Create a GraphStorage class that:\n1. Establishes connection to Neo4j database\n2. Creates appropriate indexes and constraints for efficient querying\n3. Implements batch operations for node and edge insertion\n4. Handles graph updates and merges with existing data\n5. Implements transaction management for data consistency\n6. Provides methods for graph maintenance and optimization\n\nEnsure the implementation supports efficient storage and retrieval of both graph structure and vector embeddings.",
+      "testStrategy": "Test Neo4j connection and data insertion with sample nodes and edges. Verify constraints and indexes are properly created. Benchmark insertion performance to ensure it meets throughput requirements. Test update scenarios with existing data."
+    },
+    {
+      "id": 7,
+      "title": "Develop Query Processing API",
+      "description": "Create a FastAPI-based API for processing different types of queries against the knowledge graph.",
+      "status": "pending",
+      "dependencies": [
+        6
+      ],
+      "priority": "low",
+      "details": "Implement a QueryProcessor module and FastAPI endpoints that:\n1. Support all required query types:\n   - Keyword queries\n   - Semantic queries\n   - Graph traversal queries\n   - Hybrid queries\n2. Implement efficient graph traversal algorithms\n3. Create query result caching for performance optimization\n4. Provide response time monitoring\n5. Include pagination and filtering options\n6. Document API endpoints with OpenAPI\n\nEnsure query response times meet the <200ms requirement for basic queries as specified in success metrics.",
+      "testStrategy": "Test all query types with representative examples. Benchmark query performance and verify it meets the <200ms requirement. Test caching effectiveness with repeated queries. Create integration tests that verify end-to-end functionality from bookmark data to query results."
+    },
+    {
+      "id": 8,
+      "title": "Implement Graph-Driven Agent/Tool Orchestration with MCP Integration",
+      "description": "Create a system that automatically runs agents based on graph state and feeds results back into the graph, with secure MCP server auto-creation for tools.",
+      "status": "pending",
+      "dependencies": [
+        6
+      ],
+      "priority": "medium",
+      "details": "Implement a Graph-Driven Agent Orchestration system that:\n\n1. Creates an agent infrastructure that reacts to graph changes:\n   - Implements triggers or polling logic so agents can detect new/changed nodes\n   - Agents subscribe to graph updates and execute when nodes meet specific criteria\n   - Results and state changes are automatically written back to the graph\n   - Changes propagate through the graph, triggering downstream tasks\n\n2. Automatically creates MCP servers for tools:\n   - When a new actionable node/tool is added to the graph, auto-generate an MCP server\n   - MCP servers follow Model Context Protocol conventions\n   - Each tool or node type gets its own dedicated MCP server\n   - Server endpoints are registered back in the graph for discovery\n\n3. Implements secure authentication and authorization:\n   - Integrates with either Stytch, Auth0, or WorkOS for identity management\n   - Follows patterns from Cloudflare blog on secure MCP servers\n   - Only authenticated, authorized entities can invoke tool endpoints\n   - Supports different permission levels for different tools/nodes\n\n4. Leverages Cloudflare Durable Objects for state:\n   - Each MCP server instance has durable state, backed by a Durable Object\n   - Includes SQL database for persistence of tool state\n   - Supports hibernation for cost optimization\n   - Implements state synchronization APIs (state, initialState, setState, onStateUpdate, sql)\n\nReference the Cloudflare blog post section: \"Use Stytch, Auth0 and WorkOS to bring authentication & authorization to your MCP server\" for implementation guidelines.",
+      "testStrategy": "Create test cases for agent reactivity to graph changes. Verify MCP servers are correctly generated and deployed. Test authentication flow with multiple identity providers. Verify permissions correctly restrict unauthorized access. Benchmark agent execution and feedback loop performance."
+    }
+  ],
+  "metadata": {
+    "projectName": "Knowledge Graph of Thoughts (KGoT)",
+    "totalTasks": 8,
+    "sourceFile": "/Users/imac/Desktop/webdev-setup/knowledge-graph-of-thoughts/scripts/prd.txt",
+    "generatedAt": "2023-05-15"
+  }
+}

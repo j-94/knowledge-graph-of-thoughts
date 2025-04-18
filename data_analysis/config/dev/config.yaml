@@ -1,0 +1,41 @@
+# Development Environment Configuration
+
+# Database settings (using Docker container)
+database:
+  host: neo4j
+  port: 7687
+  user: neo4j
+  password: password
+  database_name: neo4j
+
+# Bookmark processing settings for development
+bookmark_processing:
+  # Smaller batch size for faster feedback during development
+  batch_size: 100
+  max_workers: 2
+  
+  # Development validation can be more lenient
+  validation:
+    strict_mode: false
+    
+# Embedding settings for development
+embeddings:
+  # Use a smaller, faster model for development
+  model_name: "sentence-transformers/paraphrase-MiniLM-L6-v2"
+  dimension: 384
+  cache_enabled: true
+  
+# Relationship settings for development
+relationships:
+  # Lower thresholds for easier testing
+  similarity_threshold: 0.6
+  
+# Logging settings for development
+logging:
+  level: DEBUG
+  file: "/app/logs/bookmark_processing_dev.log"
+  
+# API settings for development
+api:
+  debug: true
+  enable_docs: true 
