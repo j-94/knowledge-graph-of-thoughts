@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
+    "@aws-sdk/client-s3": "^3.563.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
     "boxen": "^8.0.1",
