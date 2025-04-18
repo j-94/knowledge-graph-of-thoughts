@@ -1,0 +1,61 @@
+# Production Environment Configuration
+
+# Database settings for production
+database:
+  # These should be overridden by environment variables in production
+  host: ${NEO4J_HOST:-neo4j}
+  port: ${NEO4J_PORT:-7687}
+  user: ${NEO4J_USER:-neo4j}
+  password: ${NEO4J_PASSWORD:-password}  # Should be changed in production
+  database_name: ${NEO4J_DATABASE:-neo4j}
+  
+  # Production-specific settings
+  connection_pool_size: 50
+  connection_timeout: 30
+  connection_acquisition_timeout: 60
+  connection_liveness_check_timeout: 30
+  max_transaction_retry_time: 45
+  
+# Bookmark processing settings for production
+bookmark_processing:
+  # Larger batches for efficiency
+  batch_size: 5000
+  max_workers: 8   # Adjust based on available CPU cores
+  timeout_seconds: 1800  # 30 minutes
+  
+  # Strict validation for production data
+  validation:
+    strict_mode: true
+    fail_fast: false  # Process as much as possible even with errors
+    
+# Embedding settings for production
+embeddings:
+  # Use full-size model for best quality
+  model_name: "sentence-transformers/all-mpnet-base-v2"
+  dimension: 768
+  batch_size: 64
+  cache_enabled: true
+  cache_dir: ${EMBEDDING_CACHE_DIR:-/app/data/embedding_cache}
+  
+# Relationship settings for production
+relationships:
+  # Stricter thresholds for higher quality relationships
+  similarity_threshold: 0.75
+  tag_overlap_min: 3
+  max_temporal_distance_hours: 12
+  
+# Logging settings for production
+logging:
+  level: ${LOG_LEVEL:-INFO}
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: ${LOG_FILE:-/app/logs/bookmark_processing.log}
+  
+# API settings for production
+api:
+  host: "0.0.0.0"
+  port: ${API_PORT:-8000}
+  debug: false
+  workers: 4
+  cors_origins:
+    - ${CORS_ORIGIN_1:-https://example.com}
+    - ${CORS_ORIGIN_2:-https://app.example.com} 

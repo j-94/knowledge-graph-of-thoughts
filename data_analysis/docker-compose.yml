@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Python data analysis environment
+  data-analysis:
+    container_name: kgot_data_analysis
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the project directory
+      - ../:/app/project
+      # Mount data directory
+      - ./data:/app/data
+      # Mount notebooks directory
+      - ./notebooks:/app/notebooks
+    ports:
+      # For Jupyter
+      - "8888:8888"
+      # For other services if needed
+      - "8050:8050"
+    environment:
+      # Neo4j connection
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=password
+      # Jupyter settings
+      - JUPYTER_TOKEN=kgot
+    command: >
+      bash -c "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=kgot"
+    depends_on:
+      - neo4j
+    networks:
+      - kgot_data_network
+
+  # Neo4j database
+  neo4j:
+    container_name: kgot_data_neo4j
+    image: neo4j:5.16.0
+    ports:
+      - "7474:7474"  # HTTP
+      - "7687:7687"  # Bolt
+    environment:
+      - NEO4J_AUTH=neo4j/password
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_dbms_security_procedures_allowlist=apoc.*
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4J_PLUGINS=["apoc"]
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/import
+      - neo4j_plugins:/plugins
+    networks:
+      - kgot_data_network
+
+# Named volumes for Neo4j data persistence
+volumes:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_import:
+  neo4j_plugins:
+
+# Network for container communication
+networks:
+  kgot_data_network:
+    driver: bridge 

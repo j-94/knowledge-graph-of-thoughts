@@ -1,0 +1,78 @@
+# Base Configuration for Knowledge Graph of Thoughts Bookmark Processing
+
+# Neo4j Database Settings
+database:
+  # These can be overridden by environment-specific configs
+  host: neo4j
+  port: 7687
+  user: neo4j
+  password: password
+  database_name: neo4j
+
+# Bookmark Processing Settings
+bookmark_processing:
+  # Schema validation settings
+  validation:
+    required_fields:
+      - id
+      - title
+      - url
+      - tags
+    optional_fields:
+      - timestamp
+      - description
+      - content
+      - source
+      - metadata
+  
+  # Batch processing settings
+  batch_size: 1000
+  max_workers: 4
+  timeout_seconds: 300
+  
+  # Data normalization settings
+  normalization:
+    timestamp_format: "%Y-%m-%d %H:%M:%S%z"
+    url_normalization: true
+    text_cleanup: true
+    
+# Embedding Generation Settings
+embeddings:
+  model_name: "sentence-transformers/all-mpnet-base-v2"
+  dimension: 768
+  batch_size: 32
+  cache_enabled: true
+  cache_dir: "/app/data/embedding_cache"
+  use_title_fallback: true
+  
+# Relationship Generation Settings
+relationships:
+  # Thresholds for creating relationships
+  similarity_threshold: 0.7
+  tag_overlap_min: 2
+  max_temporal_distance_hours: 24
+  
+  # Relationship types
+  types:
+    - name: "SIMILAR_TO"
+      weight_multiplier: 1.0
+    - name: "SHARES_TAGS_WITH"
+      weight_multiplier: 0.8
+    - name: "CREATED_NEAR"
+      weight_multiplier: 0.5
+      
+# Logging Settings
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "/app/logs/bookmark_processing.log"
+  
+# API Settings
+api:
+  host: "0.0.0.0"
+  port: 8000
+  debug: false
+  enable_docs: true
+  cors_origins:
+    - "http://localhost:3000"
+    - "http://localhost:8080" 

@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  bookmark-processor:
+    build: .
+    volumes:
+      - ./:/app/
+      - ./output:/app/output
+    command: ["--input", "/app/data-bookmark.jsonl", "--output", "/app/output/organized-bookmarks.jsonl", "--pretty", "--group-by", "source"]
+    
+  # Example of using alternate format (markdown)
+  markdown-export:
+    build: .
+    volumes:
+      - ./:/app/
+      - ./output:/app/output
+    command: ["--input", "/app/data-bookmark.jsonl", "--output", "/app/output/bookmarks.md", "--format", "markdown", "--group-by", "source"]
+    profiles: ["markdown"]
+    
+  # Example of filtering by date
+  recent-bookmarks:
+    build: .
+    volumes:
+      - ./:/app/
+      - ./output:/app/output
+    command: ["--input", "/app/data-bookmark.jsonl", "--output", "/app/output/recent-bookmarks.jsonl", "--pretty", "--remove-older-than", "2023-01-01"]
+    profiles: ["recent"]
+    
+  # Example of filtering by source
+  github-bookmarks:
+    build: .
+    volumes:
+      - ./:/app/
+      - ./output:/app/output
+    command: ["--input", "/app/data-bookmark.jsonl", "--output", "/app/output/github-bookmarks.jsonl", "--pretty", "--filter-source", "github"]
+    profiles: ["github"] 
