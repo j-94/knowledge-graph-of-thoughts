@@ -1,0 +1,62 @@
+# Knowledge Graph Configuration
+graph:
+  # Threshold for concept similarity (0.0-1.0)
+  concept_similarity_threshold: 0.85
+  
+  # Maximum number of concepts to extract per bookmark
+  max_concepts_per_bookmark: 5
+  
+  # Minimum relevance score for a concept to be included
+  min_concept_relevance: 0.3
+  
+  # Neo4j database configuration
+  neo4j:
+    uri: bolt://localhost:7687
+    username: neo4j
+    password: password
+    database: neo4j
+  
+# Bookmark Processing Parameters
+bookmarks:
+  # Maximum number of bookmarks to process in a batch
+  batch_size: 10
+  
+  # Minimum character length for bookmark description
+  min_description_length: 50
+  
+  # Exclude bookmarks with these domains
+  excluded_domains:
+    - example.com
+    - test.com
+
+# Text Processing Parameters
+text:
+  # Languages to support for text analysis
+  languages:
+    - en
+  
+  # Stop words to ignore during concept extraction
+  additional_stop_words:
+    - example
+    - test 
+
+# LLM Settings
+llm:
+  model: gpt-4
+  temperature: 0.2
+  max_tokens: 1000
+
+# Embedding Settings
+embedding:
+  model: text-embedding-ada-002
+  dimensions: 1536
+  
+# Processing Settings
+processing:
+  batch_size: 10
+  parallel_workers: 4
+  
+# User Settings
+user:
+  default_language: en
+  timezone: UTC 

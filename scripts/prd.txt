@@ -1,0 +1,100 @@
+# Knowledge Graph of Thoughts (KGoT) - Data Requirements
+
+## Overview
+The Knowledge Graph of Thoughts (KGoT) project processes bookmark data into knowledge graph structures to enable advanced reasoning, search, and insight generation. This document focuses on the data structures and formats required for the system.
+
+## Core Data Requirements
+- **Bookmark Data Structure**: Standardized format for bookmark entries in JSONL
+- **Knowledge Graph Schema**: Node and edge representations for knowledge graph construction
+- **Metadata Requirements**: Essential tracking data for system operations
+- **Query Structure**: Format for search and reasoning queries
+
+## Data Models
+
+### Bookmark Data Structure (JSONL)
+Each bookmark in data-bookmark.jsonl must contain:
+- `id`: Unique identifier for the bookmark (string)
+- `title`: Title of the bookmarked content (string)
+- `url`: Full URL to the resource (string)
+- `tags`: Array of relevant tags/categories (string[])
+- `timestamp`: When the bookmark was created (ISO datetime)
+- `description`: Optional summary or notes (string)
+- `content`: Optional extracted text content (string)
+- `source`: Origin of the bookmark (string)
+- `metadata`: Additional custom attributes (object)
+
+Example:
+```
+{"id": "b1", "title": "AI Research Paper", "url": "http://example.com/ai", "tags": ["AI", "ML"], "timestamp": "2023-01-15T08:30:00Z", "description": "Important research on transformer models", "source": "chrome", "metadata": {"readStatus": "unread", "importance": "high"}}
+```
+
+### Knowledge Graph Schema
+#### Nodes
+Nodes represent individual thoughts or bookmarks:
+- `id`: Unique identifier
+- `type`: Node type (bookmark, concept, fact, etc.)
+- `properties`: All relevant attributes from the source
+- `embeddings`: Vector representation for semantic search
+
+#### Edges
+Edges represent relationships between nodes:
+- `source`: Source node ID
+- `target`: Target node ID
+- `type`: Relationship type (related, references, similar, etc.)
+- `weight`: Strength of relationship (0.0-1.0)
+- `metadata`: Additional relationship context
+
+### Query Structure
+- **Keyword Queries**: Simple term-based search
+- **Semantic Queries**: Natural language or vector-based queries
+- **Graph Traversal Queries**: Path-based queries exploring connections
+- **Hybrid Queries**: Combining multiple query types
+
+## Technical Integration
+
+### Data Transformation Pipeline
+1. Load raw bookmark data from JSONL
+2. Extract and normalize essential fields
+3. Generate embeddings for semantic search
+4. Identify relationships between bookmarks
+5. Construct knowledge graph structure
+6. Index for efficient query processing
+
+### Storage Requirements
+- Raw bookmark data: JSONL files
+- Processed knowledge graph: Neo4j
+- Vector embeddings: Vector database
+- Metadata index: Key-value store
+
+## Implementation Guidelines
+
+### Bookmark Processing 
+- Use pandas for initial data loading and transformation
+- Implement validation to ensure required fields are present
+- Generate embeddings using sentence-transformers
+- Extract keywords and entities for enhanced relationship identification
+
+### Knowledge Graph Construction
+- Define clear relationship types based on content similarity, shared tags, temporal proximity
+- Implement automated edge generation with confidence scores
+- Create mechanisms for user feedback to refine relationships
+- Build routines for periodic graph maintenance and optimization
+
+### Query Processing
+- Support natural language queries through LLM integration
+- Implement efficient graph traversal algorithms
+- Create hybrid search combining keyword, semantic, and graph-based approaches
+- Cache common query patterns for performance
+
+## Key Libraries and Tools
+- pandas (2.2.2): Primary data manipulation
+- sentence-transformers: Vector embeddings generation
+- networkx: Graph operations before Neo4j insertion
+- Neo4j: Graph database for knowledge representation
+- FastAPI: API layer for query processing
+
+## Success Metrics
+- Accuracy of relationship identification (>85%)
+- Query response time (<200ms for basic queries)
+- Bookmark processing throughput (>100 bookmarks/second)
+- User satisfaction with search relevance (>4.5/5 rating) 

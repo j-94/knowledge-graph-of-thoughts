@@ -1,0 +1,34 @@
+# Bookmark Processing Configuration
+
+# Database connection settings
+database:
+  uri: "bolt://localhost:7687"
+  user: "neo4j"
+  password: "password"  # Use environment variable override in production
+  database: "neo4j"
+  
+# Processing settings
+processing:
+  batch_size: 128
+  embedding_model: "all-MiniLM-L6-v2"  # Default sentence-transformer model
+  similarity_threshold: 0.75  # Threshold for creating similarity relationships
+  max_content_length: 5000   # Maximum content length for embedding
+  
+# Path settings
+paths:
+  raw_data: "data/bookmarks/bookmarks.jsonl"
+  cache_dir: "cache/embeddings"
+  graph_snapshot_dir: "logs/bookmark_graph_snapshots"
+  
+# Logging settings
+logging:
+  level: "INFO"
+  file: "logs/bookmark_processing.log"
+  
+# Task-KG settings
+task_kg:
+  enabled: true
+  neo4j_label: "Task"
+  status_property: "status"
+  dependency_relationship: "DEPENDS_ON"
+  subtask_relationship: "HAS_SUBTASK" 
